@@ -2,6 +2,97 @@ import { ProjectFile } from '../types';
 
 export const PROJECT_FILES: ProjectFile[] = [
   {
+    id: 'wrangler',
+    name: 'wrangler.toml',
+    path: 'wrangler.toml',
+    language: 'toml',
+    description: 'Configuração Cloudflare com assets.directory = "dist" e binding do banco D1',
+    content: `name = "whatsapp-leads-dashboard"
+compatibility_date = "2024-03-01"
+main = "worker.ts"
+
+# Configuração de Assets Estáticos gerados pelo build
+[assets]
+directory = "dist"
+
+# Configuração do Banco de Dados Cloudflare D1 (100% Gratuito)
+# Crie seu banco executando: npx wrangler d1 create whatsapp-leads-db
+# e substitua o database_id abaixo pelo ID retornado no terminal.
+[[d1_databases]]
+binding = "DB"
+database_name = "whatsapp-leads-db"
+database_id = "SEU_DATABASE_ID_AQUI"`
+  },
+  {
+    id: 'worker',
+    name: 'worker.ts',
+    path: 'worker.ts',
+    language: 'typescript',
+    description: 'API Serverless Cloudflare Worker com suporte a assets e D1 no fuso de Brasília',
+    content: `export interface Env {
+  DB: D1Database;
+  ASSETS?: {
+    fetch: (request: Request) => Promise<Response>;
+  };
+}
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Content-Type": "application/json; charset=utf-8",
+};
+
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: corsHeaders });
+    }
+
+    // POST /api/lead
+    if (url.pathname === "/api/lead" && request.method === "POST") {
+      const body = await request.json();
+      const nomeLead = body?.lead?.trim();
+      const rawText = body?.rawText || "";
+      const origem = body?.origem || "Operações Internas - INC Empreendimentos";
+
+      const agoraBrasilia = new Intl.DateTimeFormat("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+        year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+      }).format(new Date());
+
+      await env.DB.prepare(
+        "INSERT INTO leads (nome, raw_text, origem, timestamp) VALUES (?, ?, ?, ?)"
+      ).bind(nomeLead, rawText, origem, agoraBrasilia).run();
+
+      return new Response(JSON.stringify({ success: true, lead: nomeLead }), {
+        status: 201, headers: corsHeaders
+      });
+    }
+
+    // GET /api/relatorio
+    if (url.pathname === "/api/relatorio" && request.method === "GET") {
+      const leads = await env.DB.prepare(
+        "SELECT * FROM leads ORDER BY timestamp DESC"
+      ).all();
+      return new Response(JSON.stringify({ success: true, leads: leads.results }), {
+        status: 200, headers: corsHeaders
+      });
+    }
+
+    // Fallback para Assets Estáticos (dist/)
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
+    }
+
+    return new Response("Not found", { status: 404 });
+  }
+};`
+  },
+  {
     id: 'public-index',
     name: 'public/index.html',
     path: 'public/index.html',

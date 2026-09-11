@@ -56,18 +56,21 @@ export const DeployGuide: React.FC = () => {
     },
     {
       id: 'step-3',
-      title: 'Passo 3: Deploy Direto no Cloudflare Pages com Functions',
-      badge: 'Cloudflare Pages',
+      title: 'Passo 3: Deploy com Assets Estáticos e D1',
+      badge: 'Cloudflare Deploy',
       icon: Cloud,
-      description: 'Publica o frontend estático de public/ e as Pages Functions de functions/api/ em um único comando.',
+      description: 'Publica a API Serverless com os assets estáticos gerados em dist/ e o banco D1.',
       commands: [
-        '# Deploy direto da pasta public com as Functions integradas',
-        'npx wrangler pages deploy public --project-name=whatsapp-leads-dashboard',
+        '# 1. Gerar os assets para a pasta dist',
+        'npm run build',
+        '',
+        '# 2. Executar o deploy via Wrangler',
+        'npx wrangler deploy',
       ],
       details: [
-        'Resolve o erro: "Could not detect a directory containing static files", pois a pasta public/ agora contém o index.html pronto!',
-        'As rotas da API em functions/api/lead.js e functions/api/relatorio.js são publicadas automaticamente na mesma URL.',
-        'O terminal retornará a URL: https://whatsapp-leads-dashboard.pages.dev',
+        'Resolve o erro: "The `assets` property in your configuration is missing the required `directory` property", pois o wrangler.toml agora possui [assets] directory = "dist"!',
+        'As rotas /api/lead e /api/relatorio rodam no Worker com acesso ao banco D1.',
+        'O terminal retornará a URL oficial da aplicação.',
       ],
     },
     {
@@ -150,9 +153,9 @@ export const DeployGuide: React.FC = () => {
         <div className="mt-4 p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-start gap-3">
           <span className="text-emerald-700 text-lg">💡</span>
           <div className="text-xs text-emerald-900 leading-relaxed">
-            <strong className="font-semibold block mb-0.5">Estrutura corrigida para Cloudflare Pages com Functions:</strong>
-            O frontend estático está centralizado em <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">public/index.html</code> (com Tailwind CDN, sem necessidade de build do Vite).
-            As rotas da API rodam automaticamente via <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">functions/api/</code>. Para fazer o deploy, basta rodar <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">npx wrangler pages deploy public</code>.
+            <strong className="font-semibold block mb-0.5">Configuração de Assets Corrigida no wrangler.toml:</strong>
+            Adicionada a propriedade <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">[assets] directory = "dist"</code> exigida pelo Cloudflare Wrangler.
+            Para o deploy, basta rodar <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">npm run build && npx wrangler deploy</code> (ou <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">npm run deploy</code>).
           </div>
         </div>
       </div>

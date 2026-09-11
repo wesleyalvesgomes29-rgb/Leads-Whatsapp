@@ -4,17 +4,29 @@ Solução completa, **100% gratuita** e sem custos de mensalidade para monitoram
 
 ---
 
-## 🛠️ Correção do Deploy na Cloudflare Pages
+## 🛠️ Correção do Deploy no Cloudflare (Wrangler)
 
 Se você executou `npx wrangler deploy` e recebeu o erro:
-> `Could not detect a directory containing static files (e.g. html, css and js)`
+> `✘ [ERROR] The 'assets' property in your configuration is missing the required 'directory' property.`
 
-**O motivo:** O comando tradicional `wrangler deploy` buscava arquivos estáticos ou um Worker puro. Para o formato **Cloudflare Pages com Functions**, a Cloudflare exige que os arquivos estáticos estejam em um diretório explícito (como `public/`) e as rotas da API na pasta `functions/`.
+**O motivo:** Nas versões recentes do Cloudflare Wrangler, ao utilizar a propriedade `assets` para servir arquivos estáticos junto com a API serverless, é obrigatório definir o subcampo `directory`.
 
-**A solução implementada:**
-1. **Frontend Estático Centralizado em `public/index.html`:** O arquivo HTML já inclui Tailwind CSS via CDN e todo o JavaScript necessário para carregar e exibir os dados. Não precisa de build do Vite (`npm run build`).
-2. **Pages Functions em `functions/api/`:** As rotas `POST /api/lead` e `GET /api/relatorio` rodam nativamente na mesma URL do Pages com acesso direto ao banco Cloudflare D1.
-3. **Deploy em Comando Único:** `npx wrangler pages deploy public --project-name=whatsapp-leads-dashboard`.
+**A solução configurada no `wrangler.toml`:**
+```toml
+name = "whatsapp-leads-dashboard"
+compatibility_date = "2024-03-01"
+main = "worker.ts"
+
+[assets]
+directory = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "whatsapp-leads-db"
+database_id = "SEU_DATABASE_ID_AQUI"
+```
+
+Os arquivos estáticos da pasta `public/` são copiados para a pasta `dist/` com o comando `npm run build`, e o Wrangler publica os assets estáticos e a API serverless conectada ao banco Cloudflare D1.
 
 ---
 

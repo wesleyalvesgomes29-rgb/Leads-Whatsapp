@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
     "build": "mkdir -p dist && cp -r public/* dist/",
-    "deploy": "npx wrangler pages deploy public",
+    "deploy": "npx wrangler deploy",
     "preview": "vite preview",
     "lint": "tsc --noEmit"
   },
