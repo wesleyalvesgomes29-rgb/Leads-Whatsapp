@@ -65,17 +65,17 @@ Se você executou `npx wrangler deploy` e recebeu o erro:
 ├── public/
 │   └── index.html             # Frontend estático completo (Tailwind CDN, sem compilação)
 ├── functions/
-│   └── api/
-│       ├── lead.js            # Pages Function: POST /api/lead (grava lead no D1)
-│       ├── relatorio.js       # Pages Function: GET /api/relatorio (contagem do dia)
-│       ├── health.js          # Pages Function: GET /api/health (status da API)
-│       └── [[route]].js       # Pages Function: Catch-all para rotas /api/*
-├── wrangler.toml              # Configuração com pages_build_output_dir = "public" e D1
-├── schema.sql                 # DDL de criação da tabela de leads no D1 (SQLite)
+│   ├── api/
+│   │   ├── lead.js            # Pages Function: POST /api/lead (grava lead no D1)
+│   │   ├── relatorio.js       # Pages Function: GET /api/relatorio (contagem do dia)
+│   │   ├── health.js          # Pages Function: GET /api/health (status da API)
+│   │   └── [[route]].js       # Pages Function: Catch-all para rotas /api/*
+│   └── schema.sql             # DDL de criação da tabela de leads no D1 (SQLite)
 ├── bridge/
 │   ├── package.json           # Dependências do cliente Baileys (Node.js)
 │   ├── whatsapp-client.js     # Script de monitoramento WhatsApp e disparo HTTP
 │   └── .env.example           # Variáveis com PAGES_URL e contato alvo
+├── package.json               # Configuração leve sem builds complexos
 └── README.md                  # Este guia completo
 ```
 
@@ -92,16 +92,9 @@ Se você executou `npx wrangler deploy` e recebeu o erro:
    ```bash
    npx wrangler d1 create whatsapp-leads-db
    ```
-3. O terminal informará o `database_id`. Abra o arquivo `wrangler.toml` e cole esse ID:
-   ```toml
-   [[d1_databases]]
-   binding = "DB"
-   database_name = "whatsapp-leads-db"
-   database_id = "COLE_O_ID_AQUI"
-   ```
-4. Aplique a tabela de leads no banco remoto:
+3. Aplique a tabela de leads no banco remoto:
    ```bash
-   npx wrangler d1 execute whatsapp-leads-db --remote --file=./schema.sql
+   npx wrangler d1 execute whatsapp-leads-db --remote --file=./functions/schema.sql
    ```
 
 ---

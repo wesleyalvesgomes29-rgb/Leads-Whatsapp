@@ -47,7 +47,7 @@ export const DeployGuide: React.FC = () => {
       description: 'Cria a tabela leads com suporte ao fuso horário de Brasília e índices.',
       commands: [
         '# Aplica a tabela leads no banco remoto de produção',
-        'npx wrangler d1 execute whatsapp-leads-db --remote --file=./schema.sql',
+        'npx wrangler d1 execute whatsapp-leads-db --remote --file=./functions/schema.sql',
       ],
       details: [
         'A tabela terá os campos: id, nome, raw_text, origem e timestamp.',

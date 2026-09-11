@@ -2,29 +2,11 @@ import { ProjectFile } from '../types';
 
 export const PROJECT_FILES: ProjectFile[] = [
   {
-    id: 'wrangler',
-    name: 'wrangler.toml',
-    path: 'wrangler.toml',
-    language: 'toml',
-    description: 'Configuração do Cloudflare Pages com pages_build_output_dir = "public" e binding do banco D1',
-    content: `name = "whatsapp-leads-dashboard"
-pages_build_output_dir = "public"
-compatibility_date = "2024-03-01"
-
-# Configuração do Banco de Dados Cloudflare D1 (100% Gratuito)
-# Crie seu banco executando: npx wrangler d1 create whatsapp-leads-db
-# e substitua o database_id abaixo pelo ID retornado no terminal.
-[[d1_databases]]
-binding = "DB"
-database_name = "whatsapp-leads-db"
-database_id = "SEU_DATABASE_ID_AQUI"`
-  },
-  {
     id: 'public-index',
     name: 'public/index.html',
     path: 'public/index.html',
     language: 'html',
-    description: 'Frontend estático limpo e autocontido com Tailwind CDN para Cloudflare Pages (sem Vite ou compilação)',
+    description: 'Frontend estático puro com Tailwind CDN para Cloudflare Pages (sem Vite ou compilação)',
     content: `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -379,8 +361,8 @@ export async function onRequestGet(context) {
   },
   {
     id: 'schema',
-    name: 'schema.sql',
-    path: 'schema.sql',
+    name: 'functions/schema.sql',
+    path: 'functions/schema.sql',
     language: 'sql',
     description: 'Script DDL para criação da tabela de leads e índices de busca no Cloudflare D1',
     content: `-- ================================================================

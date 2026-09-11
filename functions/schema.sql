@@ -1,5 +1,5 @@
 -- ================================================================
--- Schema D1 Database (Cloudflare SQLite)
+-- Schema D1 Database (Cloudflare SQLite Serverless)
 -- Monitoramento e Armazenamento de Leads do WhatsApp
 -- ================================================================
 
