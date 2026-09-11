@@ -68,7 +68,7 @@ export const DeployGuide: React.FC = () => {
         'npx wrangler deploy',
       ],
       details: [
-        'Resolve o erro: "The `assets` property in your configuration is missing the required `directory` property", pois o wrangler.toml agora possui [assets] directory = "dist"!',
+        'Resolve o erro: "The `assets` property in your configuration is missing the required `directory` property", pois o wrangler.toml agora possui [assets] directory = "./dist"!',
         'As rotas /api/lead e /api/relatorio rodam no Worker com acesso ao banco D1.',
         'O terminal retornará a URL oficial da aplicação.',
       ],
@@ -154,7 +154,7 @@ export const DeployGuide: React.FC = () => {
           <span className="text-emerald-700 text-lg">💡</span>
           <div className="text-xs text-emerald-900 leading-relaxed">
             <strong className="font-semibold block mb-0.5">Configuração de Assets Corrigida no wrangler.toml:</strong>
-            Adicionada a propriedade <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">[assets] directory = "dist"</code> exigida pelo Cloudflare Wrangler.
+            Adicionada a propriedade <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">[assets] directory = "./dist"</code> exigida pelo Cloudflare Wrangler.
             Para o deploy, basta rodar <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">npm run build && npx wrangler deploy</code> (ou <code className="bg-emerald-100 px-1 py-0.5 rounded font-mono font-bold">npm run deploy</code>).
           </div>
         </div>

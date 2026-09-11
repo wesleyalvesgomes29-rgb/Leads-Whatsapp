@@ -6,18 +6,14 @@ export const PROJECT_FILES: ProjectFile[] = [
     name: 'wrangler.toml',
     path: 'wrangler.toml',
     language: 'toml',
-    description: 'Configuração Cloudflare com assets.directory = "dist" e binding do banco D1',
+    description: 'Configuração Cloudflare com assets.directory = "./dist" e binding do banco D1',
     content: `name = "whatsapp-leads-dashboard"
 compatibility_date = "2024-03-01"
 main = "worker.ts"
 
-# Configuração de Assets Estáticos gerados pelo build
 [assets]
-directory = "dist"
+directory = "./dist"
 
-# Configuração do Banco de Dados Cloudflare D1 (100% Gratuito)
-# Crie seu banco executando: npx wrangler d1 create whatsapp-leads-db
-# e substitua o database_id abaixo pelo ID retornado no terminal.
 [[d1_databases]]
 binding = "DB"
 database_name = "whatsapp-leads-db"

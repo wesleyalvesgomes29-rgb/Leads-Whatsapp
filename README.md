@@ -18,7 +18,7 @@ compatibility_date = "2024-03-01"
 main = "worker.ts"
 
 [assets]
-directory = "dist"
+directory = "./dist"
 
 [[d1_databases]]
 binding = "DB"
