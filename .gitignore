@@ -1,0 +1,12 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+.wrangler/
+auth_info_baileys/
+bridge/auth_info_baileys/
+

@@ -1,0 +1,7 @@
+{
+  "name": "Monitor de Leads WhatsApp",
+  "description": "Monitoramento de leads do WhatsApp com Baileys, Cloudflare Worker, D1 e contagem diária em fuso de Brasília.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
